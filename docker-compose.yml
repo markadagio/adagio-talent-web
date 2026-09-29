@@ -1,0 +1,16 @@
+services:
+  adagio-talent-web:
+    image: ghcr.io/markadagio/adagio-talent-web:latest
+    # To build locally instead of pulling from GHCR, comment the line above
+    # and uncomment:
+    # build: .
+    ports:
+      - "0.0.0.0:8080:8080"
+    environment:
+      # Where the backoffice API actually lives from this container's point
+      # of view — a Docker network hostname if the two run as containers on
+      # the same host/network, or a public URL if they're split further
+      # apart. index.html's own fetches stay relative ('/api/...'); this is
+      # only where *this* process forwards them to.
+      BACKOFFICE_URL: "${BACKOFFICE_URL:?set BACKOFFICE_URL in .env}"
+    restart: unless-stopped
